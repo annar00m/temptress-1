@@ -433,10 +433,10 @@ class Lock(commands.Cog):
                 database.lock(member.id, ctx.guild.id, ctx.author.id, num, sentence, roles)
                 database.add_money(ctx.author.id, ctx.guild.id, 50, 0)
                 
-                await asyncio.sleep(60 * 60 * 2)                
-                if prisoner.id in [role.id for role in member.roles]:
-                    await member.remove_roles(prisoner)
-                    database.insert_escape(ctx.author.id, ctx.guild.id, 0.5, 'cooldown')
+#                await asyncio.sleep(60 * 60 * 2)                
+#                if prisoner.id in [role.id for role in member.roles]:
+#                    await member.remove_roles(prisoner)
+#                    database.insert_escape(ctx.author.id, ctx.guild.id, 0.5, 'cooldown')
 
             else:  # I have no power
                 no_power_embed = discord.Embed(title='I don\'t have power',
@@ -498,7 +498,8 @@ class Lock(commands.Cog):
             domme = database.get_prisoner(member.id, ctx.guild.id)[2]
             if ctx.author.id == int(domme) or ctx.author.guild_permissions.administrator:
                 await member.remove_roles(prisoner)
-                embed = discord.Embed(description=f'{member.mention} is free now, released by {ctx.author.mention}', color=0xF2A2C0)
+                embed = discord.Embed(description=f'{member.mention} is free now, released by {ctx.author.mention}. ctx.author.mention} lost 50<a:pinkcoin:920347688791310366> by unlocking {member.mention}', color=0xF2A2C0)
+                database.remove_money(ctx.author.id, ctx.guild.id, 50, 0)    #remove 50 coins
                 await ctx.reply(embed=embed)
             else: 
                 embed = discord.Embed(title='Nah', description=f"Only <@{domme}> or the Admins can set {member.mention} free.", color=0xF2A2C0)
